@@ -1,0 +1,16 @@
+import {originalLinks} from './original-links.js';
+export const originalGroups=[
+{name:'文献服务',items:[['馆藏搜索','discover'],['图书续借','service/s6'],['数据库导航','discover?tab=databases'],['资源动态','service/n10'],['热门借阅','service/n11'],['资源荐购','service/s11'],['到馆新书','service/n12'],['图书捐赠','service/s49'],['图书资产入库','service/n7'],['馆际互借与文献传递','service/s10'],['CADAL数字资源','service/n3'],['南雍撷珍','service/n2'],['校友云书房','service/n4'],['江苏省高校智盟卡','service/n8']]},
+{name:'科研服务',items:[['科技查新/查收查引','service/s12'],['知识产权信息服务','service/s42'],['学科分馆','service/n6'],['人文社科数据服务','service/n5']]},
+{name:'空间服务',items:[['开放时间','spaces?tab=hours'],['全景导览','service/original-tour'],['座位预约','spaces?tab=seats'],['研讨间预约（校内IP）','spaces?tab=rooms']]},
+{name:'服务反馈',items:[['AI馆员','help'],['咨询留言','service/original-consult']]},
+{"name":"AI搜索与综述","items":[["秘塔AI","service/tool-%E7%A7%98%E5%A1%94AI"],["Consensus","service/tool-Consensus"],["Scopus AI","service/tool-Scopus%20AI"]]},
+{"name":"一站式AI科研助手","items":[["南雍闻道","research"],["研学助手","service/original-study"],["科学导航","service/tool-%E7%A7%91%E5%AD%A6%E5%AF%BC%E8%88%AA"],["CNKI AI学术研究助手","service/tool-CNKI%20AI%E5%AD%A6%E6%9C%AF%E7%A0%94%E7%A9%B6%E5%8A%A9%E6%89%8B"],["E-Academic（易学术）","service/tool-E-Academic%EF%BC%88%E6%98%93%E5%AD%A6%E6%9C%AF%EF%BC%89"],["AMiner","service/tool-AMiner"],["沁言学术","service/tool-%E6%B2%81%E8%A8%80%E5%AD%A6%E6%9C%AF"]]},
+{"name":"中文通用大模型","items":[["Deepseek","service/tool-Deepseek"],["豆包","service/tool-%E8%B1%86%E5%8C%85"],["Kimi","service/tool-Kimi"],["通义千问","service/tool-%E9%80%9A%E4%B9%89%E5%8D%83%E9%97%AE"],["文心一言","service/tool-%E6%96%87%E5%BF%83%E4%B8%80%E8%A8%80"],["讯飞星火","service/tool-%E8%AE%AF%E9%A3%9E%E6%98%9F%E7%81%AB"],["腾讯元宝","service/tool-%E8%85%BE%E8%AE%AF%E5%85%83%E5%AE%9D"],["智谱清言","service/tool-%E6%99%BA%E8%B0%B1%E6%B8%85%E8%A8%80"]]},
+{"name":"AI辅助文档处理","items":[["办公小浣熊","service/tool-%E5%8A%9E%E5%85%AC%E5%B0%8F%E6%B5%A3%E7%86%8A"],["ChatExcel","service/tool-ChatExcel"],["有道写作","service/tool-%E6%9C%89%E9%81%93%E5%86%99%E4%BD%9C"]]},
+{"name":"AI咨询","items":[["校园生活助手","service/original-campus"]]},
+{name:'推荐服务',items:[['学术头条','service/n13'],['新生指南','help'],['校友线下扫码入馆','service/n9']]},
+{name:'馆员',items:[['一体化微服务平台','service/n14'],['NLSP','service/n15']]}
+];
+export const originalNames={s6:'图书续借',s10:'馆际互借与文献传递',s11:'资源荐购',s12:'科技查新/查收查引',s42:'知识产权信息服务',n9:'校友线下扫码入馆'};
+export function originalCatalog(services,legacy){const records=[...services,...legacy];const byId=new Map(records.map(s=>[s.id,s]));const seen=new Set();const list=[];for(const group of originalGroups)for(const[name,target]of group.items){const serviceId=target.startsWith('service/')?target.slice(8):'original-'+encodeURIComponent(name);if(seen.has(serviceId))continue;seen.add(serviceId);const previous=byId.get(serviceId);list.push({...previous,id:serviceId,name:originalNames[serviceId]||name,category:group.name,source:'服务网站',sourceName:previous?.name||name,sourceUrl:originalLinks[name]?.sourceUrl||'https://51lclx1i.mh.chaoxing.com/',externalUrl:originalLinks[name]?.url||null,originalLink:originalLinks[name],description:previous?.description||'查看该功能的使用说明与入口。',route:previous?.route||'directory',depth:originalLinks[name]?.url?'外部服务':originalLinks[name]?.kind==='unconfigured'?'暂未开放':originalLinks[name]?.kind==='content'?'服务说明':previous?.depth||'服务目录',target});}return list;}
