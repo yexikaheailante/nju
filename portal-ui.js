@@ -12,7 +12,7 @@ export function homePage(c){
  const mode=getMode(c.state,c.state.role),apps=quickApps(c.state,c.catalog,c.state.role,mode),list=filterApps(c.catalog,c.audience==='all'?c.state.role:c.audience,c.audience);
  return `<div class="portal-home" data-page="unified-home">
  <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏图书'],['services','图书馆服务']].map(([id,name])=>`<button data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
- ${c.searchForm()}<div class="portal-search-hints" id="portal-search-hints">${c.searchHints()}</div></section>
+ ${c.searchForm()}<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints">${c.searchHints()}</div>${c.link(c.icon('message')+' 使用帮助','usage','btn usage-entry')}</div></section>
  <section class="portal-quick-section" aria-label="常用应用"><div class="portal-section-bar"><div class="portal-mode-tabs" role="group" aria-label="常用应用显示方式">${Object.entries(quickModes).map(([id,name])=>`<button data-action="quick-mode" data-id="${id}" aria-pressed="${mode===id}" class="${mode===id?'active':''}">${name}</button>`).join('')}</div><button class="portal-customize" data-action="customize">设置我的常用 ${c.icon('pen')}</button></div>
  ${apps.length?`<div class="portal-quick-grid">${apps.map(s=>appTile(c,s,'portal-quick')).join('')}</div>`:`<div class="portal-custom-empty"><span>还未添加常用应用</span>${c.btn('选择应用','customize','','soft')}</div>`}</section>
  <section class="portal-catalog"><div class="section-head"><h2>服务大厅</h2>${c.link('查看全部 →','services'+(c.audience==='all'?'':'?audience='+c.audience))}</div>${audienceTabs(c,c.audience)}
