@@ -40,7 +40,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input[type="checkbox"
  .btn.primary:hover,.pill.active:hover{background:#50306f;color:white;border-color:#50306f}
  .btn.danger:hover{background:#fbe6e9;color:#a23f52}
  select:hover,input[type="checkbox"]:hover{border-color:#936faf;background-color:#f5effa}
- a.brand:hover{background:#f7f2fb}
+ a.brand:hover{background:transparent}
  button:disabled:hover{cursor:not-allowed}
 }
 .search-footer{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:10px}.hero .search-footer .hot{margin:0;flex-wrap:wrap}.usage-entry{flex-shrink:0;background:#fff;border-color:#d8c7e5;color:#63427e;padding:9px 15px}.usage-entry .icon{width:17px;height:17px}.original-feedback-card{padding:22px;min-height:0}.original-feedback-card h3{margin:0}
@@ -71,3 +71,4 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input[type="checkbox"
 
 .role-home-heading{display:flex;align-items:center;gap:14px;margin-bottom:22px}.hero .role-home-heading h1{font-size:25px;margin:0}.role-home-heading .badge{font-size:11px}.role-home .quick span{line-height:1.7;white-space:normal;text-align:center}.role-home .quick{padding:19px 8px}.role-home .quick .icon{flex-shrink:0}.role-home .home-pending .actions{margin-top:14px}.role-resume-grid{display:flex;flex-wrap:wrap;gap:16px}.role-resume-grid>*{flex:1 1 240px;min-width:0}.role-resume-grid>.original-service-link{background:white;border:1px solid var(--line);padding:17px}.role-project h3{font-size:16px}.role-project p{font-size:12px;margin-top:12px}.staff-home-heading{display:flex;justify-content:space-between;align-items:center;gap:22px;margin-bottom:25px}.staff-home-heading h1{font-size:29px}.staff-home-heading p{font-size:13px;margin-top:10px}.staff-home-stats .stat:hover{border-color:#c8b5d8;background:#f5eff9}.staff-home-stats .stat strong{font-size:34px}.staff-home-stats{margin-bottom:25px}.staff-home-heading+.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.staff-empty{padding:20px 0}.staff-empty h3{font-size:17px}.staff-empty p{font-size:13px;margin-top:11px}.access-denied h2{font-size:21px}.access-denied p{font-size:14px;margin-top:14px}.role-home .home-task-grid.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}.role-home .home-task-grid.cols2>*{min-width:0}
 @media(max-width:760px){.role-home .quick{padding:16px 5px}.role-home .quick span{font-size:11px}.staff-home-heading{align-items:flex-start;flex-wrap:wrap}.staff-home-heading h1{font-size:25px}.staff-home-heading+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.role-home .home-task-grid.cols2{grid-template-columns:minmax(0,1fr)}}
+
