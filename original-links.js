@@ -1,3 +1,5 @@
+import {sourceRows} from './catalog-spec.js';
+
 export const originalLinks = {
   "办公小浣熊": {
     "url": "https://office.xiaohuanxiong.com/home",
@@ -313,6 +315,22 @@ export const originalLinks = {
     "access": "该项服务暂未开放，可通过咨询留言了解详情。"
   }
 };
+
+for(const row of sourceRows){
+ const existing=originalLinks[row.name]||{};
+ if(row.link.startsWith('http')){
+  originalLinks[row.name]={...existing,url:row.link,sourceUrl:row.link,
+   access:existing.access||'访问条件以服务提供方说明为准。'};
+ }else if(row.name==='座位预约'){
+  originalLinks[row.name]={...existing,url:null,sourceUrl:'https://seat.nju.edu.cn/index.php/index/boot.html',
+   officialUrl:'https://seat.nju.edu.cn/index.php/index/boot.html',kind:'content'};
+ }else if(row.name==='图书捐赠'){
+  originalLinks[row.name]={...existing,url:null,sourceUrl:null,kind:'content'};
+ }else{
+  originalLinks[row.name]={...existing,url:null,sourceUrl:null,kind:'unconfigured',
+   access:row.name==='意见反馈'?'功能开发中。':'目前没有可用的公开办理链接。'};
+ }
+}
 
 export const donationInstructions = [
   "南京大学图书馆热忱欢迎社会各界友好人士、团体机构、校友和在校师生向本馆赠送文献（书刊文献、档案资料、手稿信札等）。",
