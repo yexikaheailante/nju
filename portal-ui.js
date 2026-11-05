@@ -4,15 +4,15 @@ export function audienceTabs(c,selected='all'){
  return `<div class="portal-audiences" role="group" aria-label="按人群查找应用">${[['all','全部服务'],...Object.entries(c.roles)].map(([id,name])=>`<button data-action="audience" data-id="${id}" class="${id===selected?'active':''}" aria-pressed="${id===selected}">${name}</button>`).join('')}</div>`;
 }
 export function appTile(c,s,kind='portal-app'){
- const graphic={'文献服务':'book','科研服务':'layers','空间服务':'calendar','馆员':'grid','服务反馈':'message'}[s.category]||'folder';
- const body=`<span class="portal-app-icon">${c.icon(graphic)}</span><span class="portal-app-name">${c.esc(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-category">${c.esc(s.category)}</span><span class="portal-app-arrow">↗</span>`:''}`;
+ 
+ const body=`<span class="portal-app-icon">${c.serviceIcon(s.name)}</span><span class="portal-app-name">${c.esc(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-category">${c.esc(s.category)}</span><span class="portal-app-arrow">↗</span>`:''}`;
  return c.originalLink(s.name,s.target||'service/'+s.id,kind,body)||c.link(body,'service/'+s.id,kind);
 }
 export function homePage(c){
  const mode=getMode(c.state,c.state.role),apps=quickApps(c.state,c.catalog,c.state.role,mode),list=filterApps(c.catalog,c.audience==='all'?c.state.role:c.audience,c.audience);
  return `<div class="portal-home" data-page="unified-home">
  <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏图书'],['services','图书馆服务']].map(([id,name])=>`<button data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
- ${c.searchForm()}<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints">${c.searchHints()}</div>${c.link(c.icon('message')+' 使用帮助','usage','btn usage-entry')}</div></section>
+ ${c.searchForm()}<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints">${c.searchHints()}</div></div></section>
  <section class="portal-quick-section" aria-label="常用应用"><div class="portal-section-bar"><div class="portal-mode-tabs" role="group" aria-label="常用应用显示方式">${Object.entries(quickModes).map(([id,name])=>`<button data-action="quick-mode" data-id="${id}" aria-pressed="${mode===id}" class="${mode===id?'active':''}">${name}</button>`).join('')}</div><button class="portal-customize" data-action="customize">设置我的常用 ${c.icon('pen')}</button></div>
  ${apps.length?`<div class="portal-quick-grid">${apps.map(s=>appTile(c,s,'portal-quick')).join('')}</div>`:`<div class="portal-custom-empty"><span>还未添加常用应用</span>${c.btn('选择应用','customize','','soft')}</div>`}</section>
  <section class="portal-catalog"><div class="section-head"><h2>服务大厅</h2>${c.link('查看全部 →','services'+(c.audience==='all'?'':'?audience='+c.audience))}</div>${audienceTabs(c,c.audience)}
@@ -33,4 +33,3 @@ export function myPage(c,content){
  <p class="portal-local-note">资料和申请保存在当前浏览器。学校账号与业务权限由统一身份认证及服务系统核验。</p>
  <nav class="portal-my-links" aria-label="我的资料">${c.link(c.icon('star')+' 我的收藏','research?tab=favorites')}${c.link(c.icon('folder')+' 研学助手','research')}${c.state.role==='teacher'?c.link(c.icon('book')+' 课程文献中心','courses'):''}${c.state.role==='librarian'?c.link(c.icon('grid')+' 馆员系统','services?audience=librarian'):''}<button data-action="customize">${c.icon('pen')} 我的常用</button></nav>${content}`;
 }
-
