@@ -1,5 +1,5 @@
 import {serviceIcon} from './service-icons.js';
-import {serviceCopy,validateConfig,publishConfig} from './service-content.js';
+import {serviceCopy,validateConfig,publishConfig} from './service-content.js?v=20261105.2';
 import {libraryPage} from './library-ui.js';
 import {adminPage} from './admin-ui.js';
 import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js';

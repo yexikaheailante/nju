@@ -1,3 +1,4 @@
+import {donationInstructions} from './original-links.js';
 const descriptions={
  '馆藏搜索':'按书名、作者、ISBN或主题检索馆藏，查看馆藏位置与可借情况。',
  '图书续借':'查看当前借阅、应还日期，并办理符合条件的图书续借。',
@@ -62,7 +63,7 @@ export function serviceCopy(service,config={services:{}}){
   '意见反馈':'通过“我的图书馆”进入问题反馈。可先在本站整理反馈草稿，再复制内容到反馈入口发送。',
   '校友线下扫码入馆':'准备校友校园码，按入馆现场指引核验身份并扫码入馆。',
  };
- const instructions=custom?.instructions||specific[service.name]||(service.name==='图书捐赠'?'了解捐赠范围、接收原则和联系办法后，与图书馆确认捐赠事宜。':service.externalUrl?'点击服务入口，按页面提示完成检索或办理。需要账号或机构权限的资源，请按服务提供方要求登录。':'查看本页服务说明，按提示使用对应功能。');
+ const instructions=custom?.instructions||specific[service.name]||(service.name==='图书捐赠'?donationInstructions.join('\n\n'):service.externalUrl?'点击服务入口，按页面提示完成检索或办理。需要账号或机构权限的资源，请按服务提供方要求登录。':'查看本页服务说明，按提示使用对应功能。');
  return {intro,instructions};
 }
 export function validateConfig(value){
