@@ -5,7 +5,7 @@ export function audienceTabs(c,selected='all'){
 }
 export function appTile(c,s,kind='portal-app'){
  
- const body=`<span class="portal-app-icon">${c.serviceIcon(s.name)}</span><span class="portal-app-name">${c.esc(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-category">${c.esc(s.category)}</span><span class="portal-app-arrow">↗</span>`:''}`;
+ const body=`<span class="portal-app-icon">${c.serviceIcon(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-copy"><span class="portal-app-name">${c.esc(s.name)}</span><span class="portal-app-category">${c.esc(s.category)}</span></span><span class="portal-app-arrow">↗</span>`:`<span class="portal-app-name">${c.esc(s.name)}</span>`}`;
  return c.originalLink(s.name,s.target||'service/'+s.id,kind,body)||c.link(body,'service/'+s.id,kind);
 }
 export function homePage(c){

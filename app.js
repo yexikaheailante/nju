@@ -1,9 +1,10 @@
-import {serviceIcon} from './service-icons.js';
+import {uiIcon} from './ui-icons.js?v=20261105.3';
+import {serviceIcon} from './service-icons.js?v=20261105.3';
 import {serviceCopy,validateConfig,publishConfig} from './service-content.js?v=20261105.2';
-import {libraryPage} from './library-ui.js';
+import {libraryPage} from './library-ui.js?v=20261105.3';
 import {adminPage} from './admin-ui.js';
 import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js';
-import {homePage,hallPage} from './portal-ui.js?v=20261105';
+import {homePage,hallPage} from './portal-ui.js?v=20261105.3';
 import {canCreateCourse,canReserve,canViewService,canViewTicket,requireAction} from './role-access.js';
 import {roles,uid,today,stamp,searchResources,createTicket,transition,reserve,cancelReservation,citation,outline,outlineFields,migrateRoles} from './domain.js';
 import {services,legacy,resources,knowledge,toolGroups,events,initialState,referenceUrl} from './data.js';
@@ -17,8 +18,7 @@ const ADMIN_KEY='nju-service-content-draft-v1';
 try{if(location.protocol==='http:'||location.protocol==='https:')adminConfig=validateConfig(JSON.parse(localStorage.getItem(ADMIN_KEY)||'{"version":1,"services":{}}'));}catch{}
 function saveAdmin(){validateConfig(adminConfig);localStorage.setItem(ADMIN_KEY,JSON.stringify(adminConfig));}
 const $=s=>document.querySelector(s);const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const paths={search:'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z',book:'M3 4c4-1 7 0 9 2 2-2 5-3 9-2v15c-4-1-7 0-9 2-2-2-5-3-9-2ZM12 6v15',grid:'M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z',calendar:'M4 5h16v16H4ZM4 10h16M8 2v6M16 2v6',file:'M5 2h10l4 4v16H5ZM14 2v5h5M8 12h8M8 16h8',message:'M3 3h18v14H9l-6 4ZM7 7h10M7 12h7',arrow:'M4 12h16M14 6l6 6-6 6',folder:'M2 6h8l2 3h10v12H2ZM2 6V3h7l3 3',star:'m12 2 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z',clock:'M12 7v5l3 2M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0Z',pen:'m4 16 12-12 4 4L8 20l-5 1ZM13 7l4 4',check:'m4 12 5 5L21 5',user:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 22v-3c0-6 16-6 16 0v3',download:'M12 2v13m-5-5 5 5 5-5M3 16v6h18v-6',layers:'m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5'};
-const icon=(n='book')=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[n]||paths.book}"/></svg>`;
+const icon=(name='book')=>uiIcon(name);
 const btn=(label,action,id='',kind='')=>`<button class="btn ${kind}" data-action="${action}" data-id="${esc(id)}">${label}</button>`;
 const link=(label,route,kind='text-link')=>`<a class="${kind}" href="#${route}">${label}</a>`;
 const originalLink=(name,route,kind='text-link',label=name)=>{const aliases={'研讨间预约':'研讨间预约（校内IP）','查新查引':'科技查新/查收查引','读者荐购':'资源荐购','高校智盟卡':'江苏省高校智盟卡'};const resolved=aliases[name]||name;if(resolved==='意见反馈')return link(label,'workspace?tab=feedback',kind);const item=originalLinks[resolved];if(state.role==='guest'&&['校友云书房','校友线下扫码入馆'].includes(resolved))return '';const service=originalServices.find(s=>s.name===resolved);const tracked=service?' data-service="'+esc(service.id)+'"':'';if(item?.kind==='content'){const service=originalServices.find(s=>s.name===resolved);return link(label,service?'service/'+service.id:route,kind).replace('<a ', '<a '+tracked+' ');}return item?.url?`<a class="${kind}"${tracked} href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" title="打开服务网站">${label}${kind.includes('original-service-link')||kind.includes('card')||kind==='quick'||kind.startsWith('portal-')?'':' ↗'}</a>`:link(label,route,kind);};
