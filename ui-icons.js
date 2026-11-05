@@ -1214,6 +1214,104 @@ const nodes={
     "d": "M8 16H3v5"
    }
   ]
+ ],
+ "FolderSearch": [
+  [
+   "path",
+   {
+    "d": "M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "m21 21-1.9-1.9"
+   }
+  ],
+  [
+   "circle",
+   {
+    "cx": "17",
+    "cy": "17",
+    "r": "3"
+   }
+  ]
+ ],
+ "BookUser": [
+  [
+   "path",
+   {
+    "d": "M15 13a3 3 0 1 0-6 0"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"
+   }
+  ],
+  [
+   "circle",
+   {
+    "cx": "12",
+    "cy": "8",
+    "r": "2"
+   }
+  ]
+ ],
+ "BookCopy": [
+  [
+   "path",
+   {
+    "d": "M5 7a2 2 0 0 0-2 2v11"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M5.803 18H5a2 2 0 0 0 0 4h9.5a.5.5 0 0 0 .5-.5V21"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M9 15V4a2 2 0 0 1 2-2h9.5a.5.5 0 0 1 .5.5v14a.5.5 0 0 1-.5.5H11a2 2 0 0 1 0-4h10"
+   }
+  ]
+ ],
+ "BookClock": [
+  [
+   "path",
+   {
+    "d": "M10 21H5.5a2.5 2.5 0 0 1 0-5H10"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M3 18.5V5a2 2 0 0 1 2-2h11a1 1 0 0 1 1 1v5"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M7 3v9"
+   }
+  ],
+  [
+   "circle",
+   {
+    "cx": "17",
+    "cy": "17",
+    "r": "4"
+   }
+  ],
+  [
+   "path",
+   {
+    "d": "M17 15v2l1.5 1"
+   }
+  ]
  ]
 };
 const aliases={book:'BookOpen',grid:'LayoutGrid',calendar:'CalendarDays',file:'FileText',message:'MessageSquareText',arrow:'ArrowRight',folder:'Folder',star:'Star',clock:'Clock',pen:'Pencil',check:'Check',user:'UserRound',download:'Download',layers:'Layers',search:'Search'};

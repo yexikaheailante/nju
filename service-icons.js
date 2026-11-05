@@ -1,15 +1,15 @@
-import {uiIcon} from './ui-icons.js?v=20261105.3';
+import {uiIcon} from './ui-icons.js?v=20261105.4';
 const symbols={
  "馆藏搜索": "BookSearch",
- "图书续借": "RefreshCw",
- "数据库导航": "Database",
+ "图书续借": "BookClock",
+ "数据库导航": "FolderSearch",
  "资源动态": "Newspaper",
  "热门借阅": "Flame",
  "资源荐购": "BookPlus",
  "到馆新书": "BookOpen",
  "图书捐赠": "HandHeart",
  "图书资产入库": "Archive",
- "馆际互借与文献传递": "Send",
+ "馆际互借与文献传递": "BookCopy",
  "CADAL数字资源": "LibraryBig",
  "南雍撷珍": "Landmark",
  "校友云书房": "CloudDownload",
@@ -29,7 +29,7 @@ const symbols={
  "科学导航": "Atom",
  "新生指南": "BookMarked",
  "校友线下扫码入馆": "QrCode",
- "NLSP": "PanelsTopLeft",
+ "NLSP": "BookUser",
  "一体化微服务平台": "Network",
  "学术追踪": "Radar"
 };
@@ -93,6 +93,6 @@ const marks={
 };
 export function serviceIcon(name){
  const mark=marks[name];
- if(mark)return '<span class="service-mark '+(mark.some(word=>/^[A-Za-z]{5,}$/.test(word))?'service-mark-latin':'')+'" aria-hidden="true">'+mark.map(word=>'<span>'+word+'</span>').join('')+'</span>';
+ if(mark){const label=mark.join('');return '<span class="service-mark '+(mark.some(word=>/^[A-Za-z]{5,}$/.test(word))?'service-mark-latin':'')+(label.length>7?' service-mark-long':'')+'" aria-hidden="true"><span>'+label+'</span></span>';}
  return uiIcon(symbols[name]||'BookOpen','service-icon');
 }
