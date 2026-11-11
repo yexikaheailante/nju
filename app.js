@@ -3,7 +3,7 @@ import {serviceIcon} from './service-icons.js?v=20261106';
 import {serviceCopy} from './service-content.js?v=20261106';
 import {applyCatalogConfig} from './catalog-state.js?v=20261106';
 import {resourceSuggestions,serviceSuggestions} from './search-suggestions.js?v=20261106';
-import {libraryPage} from './library-ui.js?v=20261106';
+import {libraryPage} from './library-ui.js?v=20261106.2';
 import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js?v=20261106';
 import {homePage,hallPage} from './portal-ui.js?v=20261106';
 import {canCreateCourse,canReserve,canViewService,canViewTicket,requireAction} from './role-access.js';
