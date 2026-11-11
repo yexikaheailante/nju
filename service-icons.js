@@ -49,10 +49,6 @@ const marks={
  "秘塔AI": [
   "秘塔"
  ],
- "Consensus": [
-  "Con",
-  "sensus"
- ],
  "Scopus AI": [
   "Scopus"
  ],
@@ -92,7 +88,7 @@ const marks={
  ]
 };
 export function serviceIcon(name){
- const mark=marks[name];
+ const mark=Object.hasOwn(marks,name)?marks[name]:null;
  if(mark){const label=mark.join('');return '<span class="service-mark '+(mark.some(word=>/^[A-Za-z]{5,}$/.test(word))?'service-mark-latin':'')+(label.length>7?' service-mark-long':'')+'" aria-hidden="true"><span>'+label+'</span></span>';}
- return uiIcon(symbols[name]||'BookOpen','service-icon');
+ return uiIcon(Object.hasOwn(symbols,name)?symbols[name]:'BookOpen','service-icon');
 }

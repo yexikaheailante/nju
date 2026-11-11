@@ -26,8 +26,8 @@ export const originalLinks = {
     "access": "外部网站；访问条件、费用与服务状态以原网站为准。"
   },
   "校园生活助手": {
-    "url": "https://help.nju.edu.cn/inner-chat",
-    "sourceUrl": "https://help.nju.edu.cn/inner-chat",
+    "url": "https://search.nju.edu.cn/xnjznzs",
+    "sourceUrl": "https://search.nju.edu.cn/xnjznzs",
     "group": "AI咨询",
     "access": "可能需要南京大学身份、机构授权或独立账号。"
   },
@@ -130,12 +130,6 @@ export const originalLinks = {
   "秘塔AI": {
     "url": "https://metaso.cn/",
     "sourceUrl": "https://metaso.cn/",
-    "group": "AI搜索与综述",
-    "access": "外部网站；访问条件、费用与服务状态以原网站为准。"
-  },
-  "Consensus": {
-    "url": "https://consensus.app/",
-    "sourceUrl": "https://consensus.app/",
     "group": "AI搜索与综述",
     "access": "外部网站；访问条件、费用与服务状态以原网站为准。"
   },
@@ -347,8 +341,7 @@ export const donationInstructions = [
   "4、捐赠文献被本馆接受并纳入馆藏后，给予正式的感谢函。受赠文献逐册加盖“友情赠送”印章。",
   "5、捐赠图书入藏后，将在南京大学图书馆网页的“图书捐赠榜”中予以公布。",
   "五、联系方式",
-  "联系人：张老师【中文图书】，电话：025-89682446",
-  "方老师【外文图书】，电话：025-89681547",
+  "联系人：张老师，电话：025-89682446",
   "地  址：江苏省南京市栖霞区仙林大道163号",
   "南京大学图书馆资源建设部",
   "邮  编：210023"

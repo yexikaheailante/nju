@@ -1,4 +1,4 @@
-import {donationInstructions} from './original-links.js';
+import {donationInstructions} from './original-links.js?v=20261106';
 const descriptions={
  '馆藏搜索':'检索馆藏图书，查看馆藏位置与可借状态。',
  '图书续借':'查看当前借阅、应还日期，并办理符合条件的图书续借。',
@@ -32,7 +32,6 @@ const descriptions={
  'AMiner':'查询学术文献、研究者和研究领域信息。',
  '沁言学术':'使用沁言学术开展资料检索与研究辅助。',
  '秘塔AI':'使用秘塔AI搜索资料并查看来源。',
- 'Consensus':'通过研究论文查找问题相关的证据。',
  'Scopus AI':'在Scopus平台中开展学术资料探索。',
  'Deepseek':'进入Deepseek，进行问答和文本处理。',
  '豆包':'进入豆包，进行问答、写作与资料处理。',
@@ -53,7 +52,7 @@ const descriptions={
 };
 export function serviceCopy(service,config={services:{}}){
  const custom=config.services?.[service.id];
- const intro=custom?.intro||descriptions[service.name]||service.description||'查看服务内容与办理方法。';
+ const intro=custom?.intro||(Object.hasOwn(descriptions,service.name)?descriptions[service.name]:'')||service.description||'查看服务内容与办理方法。';
  const specific={
   '馆藏搜索':'输入书名、作者、ISBN或主题进行检索。打开书目详情，查看收藏馆、索书号和借阅状态。个人借阅信息需登录后查看。',
   '图书续借':'登录后进入“我的借阅”，查看应还日期并选择可续借图书。是否符合续借条件及续借结果以馆藏系统显示为准。',
@@ -63,7 +62,7 @@ export function serviceCopy(service,config={services:{}}){
   '意见反馈':'通过“我的图书馆”进入问题反馈。可先在本站整理反馈草稿，再复制内容到反馈入口发送。',
   '校友线下扫码入馆':'准备校友校园码，按入馆现场指引核验身份并扫码入馆。',
  };
- const instructions=custom?.instructions||specific[service.name]||(service.name==='图书捐赠'?donationInstructions.join('\n\n'):service.externalUrl?'点击服务入口，按页面提示完成检索或办理。需要账号或机构权限的资源，请按服务提供方要求登录。':'查看本页服务说明，按提示使用对应功能。');
+ const instructions=custom?.instructions||(Object.hasOwn(specific,service.name)?specific[service.name]:'')||(service.name==='图书捐赠'?donationInstructions.join('\n\n'):service.externalUrl?'点击服务入口，按页面提示完成检索或办理。需要账号或机构权限的资源，请按服务提供方要求登录。':'查看本页服务说明，按提示使用对应功能。');
  return {intro,instructions};
 }
 export function validateConfig(value){

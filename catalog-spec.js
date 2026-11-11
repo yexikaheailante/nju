@@ -148,7 +148,7 @@ export const sourceRows = [
     "primary": "AI服务",
     "category": "AI咨询",
     "name": "校园生活助手",
-    "link": "https://help.nju.edu.cn/inner-chat"
+    "link": "https://search.nju.edu.cn/xnjznzs"
   },
   {
     "primary": "AI服务",
@@ -197,12 +197,6 @@ export const sourceRows = [
     "category": "AI搜索与综述",
     "name": "秘塔AI",
     "link": "https://metaso.cn/"
-  },
-  {
-    "primary": "AI服务",
-    "category": "AI搜索与综述",
-    "name": "Consensus",
-    "link": "https://consensus.app/"
   },
   {
     "primary": "AI服务",
@@ -607,7 +601,6 @@ export const previousTargets = {
   "AMiner": "service/tool-AMiner",
   "沁言学术": "service/tool-%E6%B2%81%E8%A8%80%E5%AD%A6%E6%9C%AF",
   "秘塔AI": "service/tool-%E7%A7%98%E5%A1%94AI",
-  "Consensus": "service/tool-Consensus",
   "Scopus AI": "service/tool-Scopus%20AI",
   "Deepseek": "service/tool-Deepseek",
   "豆包": "service/tool-%E8%B1%86%E5%8C%85",
