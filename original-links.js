@@ -276,9 +276,10 @@ export const originalLinks = {
     "sourceUrl": "https://51lclx1i.mh.chaoxing.com/",
     "dataUrl": "https://51lclx1i.mh.chaoxing.com/engine2/data/api-v2/detail/data/dc074370-9a0e148c82b95a-02ea02ed8077/-1/8dfc10f7-3e591407f2a23c-0bf2df5715df",
     "kind": "content",
-    "access": "使用微信二维码或南京大学 APP 预约。",
-    "image": "assets/seat-reservation-qr.png",
-    "sourceImage": "https://p.cldisk.com/star4/9abdec91c9346a5c43d52102e7b0d7e9/origin.jpg?rw=400&rh=400&_fileSize=7541&_orientation=1"
+    "access": "通过南京大学信息门户或南京大学 APP 预约。",
+    "image": "assets/nju-info-portal-qr.jpg",
+    "sourceImage": "https://guide.nju.edu.cn/_upload/article/images/c6/fe/fd2422a84862b492ad2f5a45a5e3/ddbb959d-6173-46ec-ae96-064ac3a1b6dd.png",
+    "guideUrl": "https://guide.nju.edu.cn/faq/33/05/c44791a537349/page.htm"
   },
   "图书捐赠": {
     "url": null,

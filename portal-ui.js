@@ -1,5 +1,5 @@
 import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261106';
-import {originalLinks} from './original-links.js?v=20261106';
+import {originalLinks} from './original-links.js?v=20261111.2';
 
 const nameParts = {
  '研讨间预约（校内IP）':['研讨间预约','（校内IP）'],
@@ -32,10 +32,12 @@ export function appTile(c,s,kind='portal-app'){
 function spacePreview(c){
  const rows = [[1,4],[0,5],[2,3,6],[1,6]];
  const seatRows = rows.map(occupied=>`<div class="seat-preview-row">${Array.from({length:8},(_,i)=>`<span class="seat-preview-place${occupied.includes(i)?' occupied':''}"></span>`).join('')}</div>`).join('');
+ const seat=c.catalog.find(service=>service.name==='座位预约');
+ const roomUrl=originalLinks['研讨间预约（校内IP）'].url;
  const links=[
-  ['user','座位预约','',originalLinks['座位预约'].officialUrl],
-  ['calendar','研讨间预约','校内IP',originalLinks['研讨间预约（校内IP）'].url],
- ];
+  seat&&['user','座位预约','',c.serviceLink(seat,'btn soft','预约指引 <span aria-hidden="true">→</span>')],
+  ['calendar','研讨间预约','校内IP',`<a class="btn soft" href="${c.esc(roomUrl)}" target="_blank" rel="noopener noreferrer" aria-label="研讨间预约，立即预约">立即预约 <span aria-hidden="true">↗</span></a>`],
+ ].filter(Boolean);
  return `<section class="portal-catalog space-preview" aria-labelledby="space-preview-title">
   <div class="section-head"><h2 id="space-preview-title">空间与座位</h2></div>
   <div class="space-preview-layout">
@@ -43,9 +45,9 @@ function spacePreview(c){
     <div class="seat-preview-map" aria-hidden="true">${seatRows}</div>
     <div class="seat-preview-legend"><span><i></i>空闲</span><span><i class="occupied"></i>已占用</span></div>
    </figure>
-   <div class="space-preview-links">${links.map(([icon,name,note,url])=>`<div class="space-preview-entry">
+   <div class="space-preview-links">${links.map(([icon,name,note,entry])=>`<div class="space-preview-entry">
     <span class="portal-app-icon" aria-hidden="true">${c.icon(icon)}</span><div><h3>${name}</h3>${note?`<small>${note}</small>`:''}</div>
-    <a class="btn soft" href="${c.esc(url)}" target="_blank" rel="noopener noreferrer" aria-label="${name}，立即预约">立即预约 <span aria-hidden="true">↗</span></a>
+    ${entry}
    </div>`).join('')}</div>
   </div></section>`;
 }

@@ -1,16 +1,16 @@
 import {uiIcon} from './ui-icons.js?v=20261105.4';
 import {serviceIcon} from './service-icons.js?v=20261106';
-import {serviceCopy} from './service-content.js?v=20261106';
+import {serviceCopy} from './service-content.js?v=20261111.2';
 import {applyCatalogConfig} from './catalog-state.js?v=20261106';
 import {resourceSuggestions,serviceSuggestions} from './search-suggestions.js?v=20261106';
 import {libraryPage} from './library-ui.js?v=20261106.2';
 import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js?v=20261106';
-import {homePage,hallPage} from './portal-ui.js?v=20261106';
+import {homePage,hallPage} from './portal-ui.js?v=20261111.2';
 import {canCreateCourse,canReserve,canViewService,canViewTicket,requireAction} from './role-access.js';
 import {roles,uid,today,stamp,searchResources,createTicket,transition,reserve,cancelReservation,citation,outline,outlineFields,migrateRoles} from './domain.js';
 import {services,legacy,resources,knowledge,toolGroups,events,initialState,referenceUrl} from './data.js';
-import {originalLinks,donationInstructions} from './original-links.js?v=20261106';
-import {originalGroups,originalCatalog} from './original.js?v=20261106';
+import {originalLinks,donationInstructions} from './original-links.js?v=20261111.2';
+import {originalGroups,originalCatalog} from './original.js?v=20261111.2';
 const KEY='nanyong-library-workbench-v2';let state,storageError='';
 try{const raw=localStorage.getItem(KEY);state=migrateRoles(raw?JSON.parse(raw):initialState());if(state.version!==1||!Array.isArray(state.tickets)||!Array.isArray(state.projects)||!roles[state.role])throw Error('数据格式不匹配');}catch{state=initialState();storageError='本地数据无法读取，已载入临时初始数据。可导出当前数据后重置。';}
 state.feedbackDrafts??=[];
@@ -88,9 +88,10 @@ function consultationPage(){return `${head('咨询留言','提交问题，馆员
 function externalServiceDetail(s){
  const o=s.originalLink||{},url=s.externalUrl,copy=serviceCopy(s,contentConfig);
  const entry=url?`<a class="btn primary" href="${esc(url)}" target="_blank" rel="noopener noreferrer">打开${esc(s.name)} ↗</a>`:s.name==='意见反馈'?link('意见反馈','workspace?tab=feedback','btn primary'):'';
- const qr=o.image?`<figure class="reservation-qr"><a href="${esc(o.image)}" target="_blank" rel="noopener noreferrer" aria-label="查看座位预约二维码大图"><img class="original-qr" src="${esc(o.image)}" alt="座位预约二维码" width="400" height="400"></a><p data-qr-error class="notice hidden" role="status">二维码暂时无法加载，可通过官方预约入口或南京大学APP预约。</p></figure>${o.officialUrl?`<a class="btn soft" href="${esc(o.officialUrl)}" target="_blank" rel="noopener noreferrer">打开座位预约 ↗</a>`:''}`:'';
+ const qr=o.image?`<figure class="reservation-qr"><a href="${esc(o.image)}" target="_blank" rel="noopener noreferrer" aria-label="查看南京大学信息门户二维码"><img class="original-qr" src="${esc(o.image)}" alt="南京大学信息门户二维码" width="200" height="200"></a><p data-qr-error class="notice hidden" role="status">二维码暂时无法加载，请在微信搜索「南京大学信息门户」，或使用南京大学 APP。</p></figure>`:'';
+ const guide=o.guideUrl?`<a class="btn soft" href="${esc(o.guideUrl)}" target="_blank" rel="noopener noreferrer">信息门户使用指南 ↗</a>`:'';
  const instructions=s.name==='图书捐赠'&&!contentConfig.services?.[s.id]?donationInstructions.join('\n\n'):copy.instructions;
- return `<div class="breadcrumb">${link('服务大厅','services')} / ${esc(s.category)}</div><div class="service-detail-title"><span class="portal-app-icon">${serviceIcon(s.name)}</span>${head(esc(s.name),copy.intro)}</div><article class="card detail-content"><h2>使用说明</h2><div class="service-instructions">${esc(instructions)}</div>${qr}<div class="actions">${entry}</div></article>`;
+ return `<div class="breadcrumb">${link('服务大厅','services')} / ${esc(s.category)}</div><div class="service-detail-title"><span class="portal-app-icon">${serviceIcon(s.name)}</span>${head(esc(s.name),copy.intro)}</div><article class="card detail-content"><h2>使用说明</h2><div class="service-instructions">${esc(instructions)}</div>${qr}<div class="actions">${entry}${guide}</div></article>`;
 }
 
 function research(){const tab=params.get('tab')||'projects',ps=ownProjects();return head('科研服务','管理研学助手、文献、阅读笔记、综述矩阵和开题提纲。',btn('研学助手','new-project','','primary'))+`<div class="research-layout"><aside class="sidebar">${[['folder','研学助手','research'],['star','我的文献收藏','research?tab=favorites'],['book','课程文献中心','courses'],['grid','AI服务','tools'],['layers','选刊参考','research?tab=journals']].filter(([,name])=>name!=='课程文献中心'||canCreateCourse(state.role)).map(([i,t,r])=>`<a href="#${r}" class="${r===(tab==='projects'?'research':'research?tab='+tab)?'active':''}">${icon(i)} ${t}</a>`).join('')}<div class="split-line"></div><p class="subheading">文献整理步骤</p><p class="count">主题检索 → 文献夹 → 阅读笔记 → 综述矩阵 → 开题提纲</p></aside><div>${tab==='favorites'?`<div class="section-head"><h2>我的文献收藏</h2>${link('继续找资源 →','discover')}</div>${favorites().length?favorites().map(getResource).filter(Boolean).map(resourceCard).join(''):empty('收藏夹还是空的','从文献服务中收藏感兴趣的文献。',link('查找资源','discover','btn primary'))}`:tab==='journals'?`<div class="card"><h2>推荐期刊</h2><p style="margin-top:12px">按研究主题查找期刊，并在期刊官网核对范围、投稿要求与出版信息。</p><div class="actions"><a class="btn soft" href="https://doaj.org/search/journals" target="_blank" rel="noopener noreferrer">开放获取期刊目录 ↗</a><a class="btn" href="https://mjl.clarivate.com/" target="_blank" rel="noopener noreferrer">期刊目录查询 ↗</a></div></div>`:`<div class="section-head"><h2>研学助手</h2><span class="count">${ps.length} 个项目</span></div>${ps.length?`<div class="grid cols2">${ps.map(p=>`<a href="#project/${p.id}" class="card project-card">${icon('folder')}<h3 style="margin-top:16px">${esc(p.title)}</h3><p>${esc(p.question||'未填写研究问题')}</p><span class="count">${p.refs.length} 篇文献 · ${p.notes.length} 条笔记</span></a>`).join('')}</div>`:empty('从一个问题开始','创建项目，整理你的第一组研究资料。',btn('研学助手','new-project','','primary'))}<div class="card section"><h3>研究工具</h3><div class="guide-grid" style="margin-top:20px">${[['阅读笔记','摘录、页码和读后思考，保留信息上下文。'],['文献综述矩阵','手动对比问题、材料、方法与观点。'],['开题提纲填写','把你的输入整理为提纲，提示未填写部分。'],['引用导出','字段完整性提示，导出文本或 BibTeX。']].map(([t,d])=>`<div class="guide-item"><strong>${t}</strong><p>${d}</p></div>`).join('')}</div></div>`}</div></div>`;}

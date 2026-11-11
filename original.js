@@ -1,5 +1,5 @@
 import {sourceRows,previousTargets} from './catalog-spec.js?v=20261106';
-import {originalLinks} from './original-links.js?v=20261106';
+import {originalLinks} from './original-links.js?v=20261111.2';
 
 // A function may be listed in more than one section of the source workbook.
 export const originalGroups=[];
