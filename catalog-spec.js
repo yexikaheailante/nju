@@ -104,6 +104,12 @@ export const sourceRows = [
   },
   {
     "primary": "图书馆服务",
+    "category": "科研服务",
+    "name": "学术追踪",
+    "link": "https://nju.libsp.net/#/scientific"
+  },
+  {
+    "primary": "图书馆服务",
     "category": "空间服务",
     "name": "开放时间",
     "link": "https://lib.nju.edu.cn/gytsg/kfsj.htm"
@@ -333,6 +339,12 @@ export const sourceRows = [
   {
     "primary": "推荐服务",
     "category": "在校生",
+    "name": "学术追踪",
+    "link": "https://nju.libsp.net/#/scientific"
+  },
+  {
+    "primary": "推荐服务",
+    "category": "在校生",
     "name": "南雍撷珍",
     "link": "https://gjtc.nju.edu.cn/frontend/"
   },
@@ -383,6 +395,12 @@ export const sourceRows = [
     "category": "教职工",
     "name": "南雍闻道",
     "link": "https://nju.libsp.net/#/home"
+  },
+  {
+    "primary": "推荐服务",
+    "category": "教职工",
+    "name": "学术追踪",
+    "link": "https://nju.libsp.net/#/scientific"
   },
   {
     "primary": "推荐服务",
@@ -509,12 +527,6 @@ export const sourceRows = [
     "category": "馆员",
     "name": "一体化微服务平台",
     "link": "https://libweb.nju.edu.cn/sso-cas/cas/nju/init?refer=https%3A%2F%2Fnjulib.v.chaoxing.com"
-  },
-  {
-    "primary": "AI服务",
-    "category": "一站式AI科研助手",
-    "name": "学术追踪",
-    "link": "https://nju.libsp.net/#/scientific"
   }
 ];
 export const recommendations = {
@@ -529,6 +541,7 @@ export const recommendations = {
     "资源荐购",
     "馆际互借与文献传递",
     "南雍闻道",
+    "学术追踪",
     "南雍撷珍",
     "CADAL数字资源",
     "江苏省高校智盟卡",
@@ -540,6 +553,7 @@ export const recommendations = {
     "资源动态",
     "资源荐购",
     "南雍闻道",
+    "学术追踪",
     "南雍撷珍",
     "CADAL数字资源",
     "科技查新/查收查引",

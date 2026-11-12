@@ -1,5 +1,5 @@
 import {canViewService} from './role-access.js';
-import {recommendations,homeIcons} from './catalog-spec.js?v=20261106';
+import {recommendations,homeIcons} from './catalog-spec.js?v=20261112';
 import {serviceMatchRank} from './search-suggestions.js?v=20261106';
 
 export const quickModes={default:'推荐应用',frequent:'高频应用',custom:'我的常用'};

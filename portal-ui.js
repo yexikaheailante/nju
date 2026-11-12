@@ -1,4 +1,4 @@
-import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261106';
+import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261112';
 import {originalLinks} from './original-links.js?v=20261111.2';
 
 const nameParts = {

@@ -4,13 +4,13 @@ import {serviceCopy} from './service-content.js?v=20261111.2';
 import {applyCatalogConfig} from './catalog-state.js?v=20261106';
 import {resourceSuggestions,serviceSuggestions} from './search-suggestions.js?v=20261106';
 import {libraryPage} from './library-ui.js?v=20261106.2';
-import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js?v=20261106';
-import {homePage,hallPage} from './portal-ui.js?v=20261111.2';
+import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode} from './portal.js?v=20261112';
+import {homePage,hallPage} from './portal-ui.js?v=20261112';
 import {canCreateCourse,canReserve,canViewService,canViewTicket,requireAction} from './role-access.js';
 import {roles,uid,today,stamp,searchResources,createTicket,transition,reserve,cancelReservation,citation,outline,outlineFields,migrateRoles} from './domain.js';
 import {services,legacy,resources,knowledge,toolGroups,events,initialState,referenceUrl} from './data.js';
 import {originalLinks,donationInstructions} from './original-links.js?v=20261111.2';
-import {originalGroups,originalCatalog} from './original.js?v=20261111.2';
+import {originalGroups,originalCatalog} from './original.js?v=20261112';
 const KEY='nanyong-library-workbench-v2';let state,storageError='';
 try{const raw=localStorage.getItem(KEY);state=migrateRoles(raw?JSON.parse(raw):initialState());if(state.version!==1||!Array.isArray(state.tickets)||!Array.isArray(state.projects)||!roles[state.role])throw Error('数据格式不匹配');}catch{state=initialState();storageError='本地数据无法读取，已载入临时初始数据。可导出当前数据后重置。';}
 state.feedbackDrafts??=[];
