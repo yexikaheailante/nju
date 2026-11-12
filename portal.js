@@ -1,9 +1,23 @@
 import {canViewService} from './role-access.js';
-import {recommendations,homeIcons} from './catalog-spec.js?v=20261112';
+import {recommendations,homeIcons} from './catalog-spec.js?v=20261112.2';
 import {serviceMatchRank} from './search-suggestions.js?v=20261106';
 
 export const quickModes={default:'推荐应用',frequent:'高频应用',custom:'我的常用'};
 export const defaultNames=homeIcons.filter(name=>name!=='馆藏搜索');
+const frequentNames=defaultNames.filter(name=>name!=='意见反馈');
+export const catalogSearchFields = [
+ ['keyword','全部检索'],
+ ['title','题名'],
+ ['author','责任者'],
+ ['subject','主题词'],
+ ['isbn','ISBN/ISSN'],
+ ['callno','索书号'],
+ ['publisher','出版社'],
+];
+export function catalogSearchUrl(field,keyword){
+ const type=catalogSearchFields.some(([id])=>id===field)?field:'keyword';
+ return 'https://opac.nju.edu.cn/#/searchListExternal/'+type+'/'+encodeURIComponent(keyword)+'/01';
+}
 const normalize=name=>name==='研讨间预约'?'研讨间预约（校内IP）':name;
 export function audiences(service){
  if(service.audiences)return service.audiences;
@@ -32,9 +46,10 @@ export function quickApps(state,catalog,role,mode,recommendedOrder=null){
  const quickCandidates=available.filter(s=>s.name!=='馆藏搜索');
  const defaults=defaultNames.map(n=>quickCandidates.find(s=>s.name===n)).filter(Boolean);
  if(mode==='frequent'){
-  const fallback=[...defaults,...quickCandidates.filter(s=>!defaults.includes(s))];
+  const frequentDefaults=defaults.filter(s=>frequentNames.includes(s.name));
+  const fallback=[...frequentDefaults,...quickCandidates.filter(s=>!defaults.includes(s))];
   const used=quickCandidates.filter(s=>p.usage[role]?.[s.id]?.count>0).sort((a,b)=>p.usage[role][b.id].count-p.usage[role][a.id].count||p.usage[role][b.id].last-p.usage[role][a.id].last);
-  return [...used,...fallback.filter(s=>!used.includes(s))].slice(0,defaultNames.length);
+  return [...used,...fallback.filter(s=>!used.includes(s))].slice(0,frequentNames.length);
  }
  if(Array.isArray(recommendedOrder)){
   return recommendedOrder.map(id=>byId.get(id)).filter(s=>s&&s.name!=='馆藏搜索').slice(0,9);

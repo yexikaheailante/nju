@@ -142,7 +142,7 @@ export const sourceRows = [
     "primary": "图书馆服务",
     "category": "咨询反馈",
     "name": "意见反馈",
-    "link": "开发中"
+    "link": "按身份进入反馈"
   },
   {
     "primary": "AI服务",
@@ -582,7 +582,7 @@ export const recommendations = {
     "一体化微服务平台"
   ]
 };
-export const homeIcons = ["馆藏搜索", "数据库导航", "AI馆员", "学术追踪", "图书续借", "座位预约", "研讨间预约（校内IP）", "科技查新/查收查引", "江苏省高校智盟卡"];
+export const homeIcons = ["馆藏搜索", "数据库导航", "AI馆员", "学术追踪", "图书续借", "座位预约", "研讨间预约（校内IP）", "意见反馈", "科技查新/查收查引", "江苏省高校智盟卡"];
 export const previousTargets = {
   "馆藏搜索": "discover",
   "图书续借": "service/s6",

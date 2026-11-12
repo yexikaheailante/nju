@@ -1,4 +1,10 @@
-import {sourceRows} from './catalog-spec.js';
+import {sourceRows} from './catalog-spec.js?v=20261112.2';
+
+const campusFeedbackUrl = 'https://libweb.nju.edu.cn/feedback/form?from=web';
+const publicFeedbackUrl = 'https://libweb.nju.edu.cn/feedback/form?ext=1&from=web';
+export function feedbackUrlForRole(role){
+ return ['student','teacher','librarian'].includes(role)?campusFeedbackUrl:publicFeedbackUrl;
+}
 
 export const originalLinks = {
   "办公小浣熊": {
@@ -321,9 +327,12 @@ for(const row of sourceRows){
    officialUrl:'https://seat.nju.edu.cn/index.php/index/boot.html',kind:'content'};
  }else if(row.name==='图书捐赠'){
   originalLinks[row.name]={...existing,url:null,sourceUrl:null,kind:'content'};
+ }else if(row.name==='意见反馈'){
+  originalLinks[row.name]={...existing,url:null,sourceUrl:null,kind:'role',
+   access:'按当前身份进入图书馆意见反馈，登录后填写并提交。'};
  }else{
   originalLinks[row.name]={...existing,url:null,sourceUrl:null,kind:'unconfigured',
-   access:row.name==='意见反馈'?'功能开发中。':'目前没有可用的公开办理链接。'};
+   access:'目前没有可用的公开办理链接。'};
  }
 }
 

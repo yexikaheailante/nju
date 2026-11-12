@@ -157,20 +157,32 @@
 .catalog-title-link span {color:var(--purple);font-size:.8em}
 .portal-hall-grid .catalog-service .catalog-service-actions {min-height:0}
 
+.portal-search .search-tabs {align-items:baseline;flex-wrap:wrap;gap:8px 26px}
+.portal-search-tab-link {padding:4px 0;color:#756683;font-size:16px;text-decoration:none}
+.portal-search-tab-link:hover,.portal-search-tab-link:focus-visible {color:var(--purple);text-decoration:underline;text-underline-offset:4px}
+.portal-search .search-row input {min-width:0}
+.catalog-search-field {flex:0 0 auto;width:auto;max-width:36%;padding:0 26px 0 12px;color:#51405f;border:0;border-radius:0;border-right:1px solid #e9e1ee;background-color:transparent;font:inherit;font-size:14px}
+.catalog-shortcuts {display:flex;flex-wrap:wrap;gap:7px 10px;margin-top:13px}
+.catalog-shortcuts a {padding:5px 11px;border:1px solid #e2d7ec;border-radius:6px;background:#ffffffb3;color:#63438a;font-size:12px;text-decoration:none}
+.catalog-shortcuts a:hover,.catalog-shortcuts a:focus-visible {background:#eee4f5;border-color:#cdb5dd}
+@media(min-width:761px){
+  .portal-header .nav {display:flex;flex:0 0 auto;gap:clamp(16px,2vw,28px);margin-inline-start:auto;padding:0}
+}
+
 .space-preview {padding-bottom:24px}
 .space-preview-layout {display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;margin-top:16px}
-.seat-preview {margin:0;padding:18px 22px;border:1px solid #eae2f0;border-radius:12px;background:#f9f6fc}
-.seat-preview figcaption {color:#51405f;font-size:14px;font-weight:650}
-.seat-preview-map {display:grid;gap:6px;margin:13px 0}
-.seat-preview-row {display:grid;grid-template-columns:repeat(4,1fr) 10px repeat(4,1fr);gap:5px}
-.seat-preview-place:nth-child(5) {grid-column:6}
-.seat-preview-place,.seat-preview-legend i {display:block;background:#f3eafc;border:1px solid #d6c3e6;border-radius:4px}
-.seat-preview-place {height:14px}
-.seat-preview-place.occupied,.seat-preview-legend .occupied {background:#ccc2d6;border-color:#c0b2cc}
-.seat-preview-legend {display:flex;gap:15px;color:#695976;font-size:12px}
-.seat-preview-legend span {display:flex;align-items:center;gap:5px}
-.seat-preview-legend i {width:12px;height:12px}
-.space-preview-links {display:grid;gap:10px}
+.campus-availability {padding:14px 18px;border:1px solid #eae2f0;border-radius:12px;background:#f9f6fc}
+.campus-availability table {width:100%;border-collapse:collapse;font-size:13px}
+.campus-availability caption {padding-bottom:10px;color:#51405f;font-size:15px;font-weight:650;text-align:left}
+.campus-example {float:right;padding:2px 8px;border-radius:4px;background:#eee5f4;color:#63438a;font-size:11px;font-weight:500}
+.campus-availability th,.campus-availability td {padding:7px 8px;text-align:left}
+.campus-availability th:first-child {padding-left:0}
+.campus-availability thead th {color:#695976;font-size:12px;font-weight:500}
+.campus-availability tbody tr {border-top:1px solid #e9e0ef}
+.campus-availability tbody th {color:#51405f;font-weight:550;white-space:nowrap}
+.campus-availability td {color:#695976;font-variant-numeric:tabular-nums;white-space:nowrap}
+.campus-availability td strong {color:#63438a;font-weight:650}
+.space-preview-links {display:grid;grid-auto-rows:1fr;gap:10px}
 .space-preview-entry {display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px 14px;border:1px solid #eae2f0;border-radius:10px}
 .space-preview-entry .portal-app-icon {width:36px;height:36px}
 .space-preview-entry h3 {margin:0;font-size:16px;line-height:1.35}
@@ -179,6 +191,14 @@
 @media(max-width:760px){
   .portal-quick-grid {grid-template-columns:repeat(auto-fit,minmax(87px,1fr));gap:6px}
   .space-preview-layout {grid-template-columns:minmax(0,1fr)}
+  .portal-search .search-tabs {gap:6px 16px}
+  .portal-search-tab-link {font-size:15px}
+  .catalog-search-field {padding-inline:6px 16px;font-size:12px}
+  .campus-availability {padding:12px}
+  .campus-availability th,.campus-availability td {padding-inline:4px}
+  .campus-availability thead th {white-space:nowrap}
+  .campus-total-label {display:block}
+  .campus-label-divider {display:none}
 }
 @media(min-width:375px) and (max-width:760px){
   .portal-quick-grid:has(> :nth-child(8):last-child) {grid-template-columns:repeat(4,minmax(0,1fr))}

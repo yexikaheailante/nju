@@ -1,5 +1,22 @@
-import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261112';
-import {originalLinks} from './original-links.js?v=20261111.2';
+import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261112.2';
+import {originalLinks} from './original-links.js?v=20261112.2';
+
+const catalogShortcuts = [
+ ['进入检索首页','https://opac.nju.edu.cn/#/Home'],
+ ['新书通报','https://opac.nju.edu.cn/#/newBookInform'],
+ ['分类浏览','https://opac.nju.edu.cn/#/categorySearchList'],
+ ['读者荐购',originalLinks['资源荐购'].url],
+ ['馆藏分布','https://lib.nju.edu.cn/gytsg/gzbj/xlg.htm'],
+ ['借阅制度','https://lib.nju.edu.cn/gytsg/gzzd.htm'],
+];
+const campusAvailability = [
+ {name:'仙林校区',seats:{available:426,total:1200},rooms:{available:8,total:18}},
+ {name:'鼓楼校区',seats:{available:128,total:520},rooms:{available:3,total:8}},
+ {name:'浦口校区',seats:{available:68,total:260},rooms:{available:2,total:5}},
+ {name:'苏州校区',seats:{available:102,total:360},rooms:{available:4,total:9}},
+];
+const countFormat = new Intl.NumberFormat('zh-CN');
+const availabilityCount = ({available,total})=>`<strong>${countFormat.format(available)}</strong><span> / ${countFormat.format(total)}</span>`;
 
 const nameParts = {
  '研讨间预约（校内IP）':['研讨间预约','（校内IP）'],
@@ -25,13 +42,12 @@ export function audienceTabs(c,selected='all'){
  return `<div class="portal-audiences" role="group" aria-label="按人群查找应用">${[['all','全部服务'],...Object.entries(c.roles)].map(([id,name])=>`<button data-action="audience" data-id="${id}" class="${id===selected?'active':''}" aria-pressed="${id===selected}">${name}</button>`).join('')}</div>`;
 }
 export function appTile(c,s,kind='portal-app'){
- const body=`<span class="portal-app-icon">${c.serviceIcon(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-copy"><span class="portal-app-name">${c.esc(s.name)}</span><span class="portal-app-category">${c.esc(s.category)}</span></span><span class="portal-app-arrow" aria-hidden="true">${s.externalUrl?'↗':'→'}</span>`:`<span class="portal-app-name">${quickName(s.name,c.esc)}</span>`}`;
+ const external=s.externalUrl||s.originalLink?.kind==='role';
+ const body=`<span class="portal-app-icon">${c.serviceIcon(s.name)}</span>${kind==='portal-app'?`<span class="portal-app-copy"><span class="portal-app-name">${c.esc(s.name)}</span><span class="portal-app-category">${c.esc(s.category)}</span></span><span class="portal-app-arrow" aria-hidden="true">${external?'↗':'→'}</span>`:`<span class="portal-app-name">${quickName(s.name,c.esc)}</span>`}`;
  return c.serviceLink(s,kind,body);
 }
 
 function spacePreview(c){
- const rows = [[1,4],[0,5],[2,3,6],[1,6]];
- const seatRows = rows.map(occupied=>`<div class="seat-preview-row">${Array.from({length:8},(_,i)=>`<span class="seat-preview-place${occupied.includes(i)?' occupied':''}"></span>`).join('')}</div>`).join('');
  const seat=c.catalog.find(service=>service.name==='座位预约');
  const roomUrl=originalLinks['研讨间预约（校内IP）'].url;
  const links=[
@@ -41,10 +57,13 @@ function spacePreview(c){
  return `<section class="portal-catalog space-preview" aria-labelledby="space-preview-title">
   <div class="section-head"><h2 id="space-preview-title">空间与座位</h2></div>
   <div class="space-preview-layout">
-   <figure class="seat-preview"><figcaption>座位分布示意</figcaption>
-    <div class="seat-preview-map" aria-hidden="true">${seatRows}</div>
-    <div class="seat-preview-legend"><span><i></i>空闲</span><span><i class="occupied"></i>已占用</span></div>
-   </figure>
+   <div class="campus-availability">
+    <table>
+     <caption><span>各校区预约概览</span><span class="campus-example">示例数据</span></caption>
+     <thead><tr><th scope="col">校区</th><th scope="col">可预约座位<span class="campus-total-label"><span class="campus-label-divider"> / </span>总座位</span></th><th scope="col">可预约研讨间<span class="campus-total-label"><span class="campus-label-divider"> / </span>总研讨间</span></th></tr></thead>
+     <tbody>${campusAvailability.map(({name,seats,rooms})=>`<tr><th scope="row">${name}</th><td>${availabilityCount(seats)}</td><td>${availabilityCount(rooms)}</td></tr>`).join('')}</tbody>
+    </table>
+   </div>
    <div class="space-preview-links">${links.map(([icon,name,note,entry])=>`<div class="space-preview-entry">
     <span class="portal-app-icon" aria-hidden="true">${c.icon(icon)}</span><div><h3>${name}</h3>${note?`<small>${note}</small>`:''}</div>
     ${entry}
@@ -54,8 +73,8 @@ function spacePreview(c){
 export function homePage(c){
  const mode=getMode(c.state,c.state.role),apps=quickApps(c.state,c.catalog,c.state.role,mode,c.recommendedOrder),list=filterApps(c.catalog,c.audience==='all'?c.state.role:c.audience,c.audience);
  return `<div class="portal-home" data-page="unified-home">
- <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏图书'],['services','图书馆服务']].map(([id,name])=>`<button data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
- ${c.searchForm()}<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints" aria-live="polite">${c.searchHints()}</div></div></section>
+ <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏资源检索'],['services','应用搜索']].map(([id,name])=>`<button data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}<a class="portal-search-tab-link" href="${c.esc(originalLinks['南雍闻道'].url)}" target="_blank" rel="noopener noreferrer">南雍闻道</a></div>
+ ${c.searchForm()}${c.scope==='resources'?`<nav class="catalog-shortcuts" aria-label="馆藏资源快捷入口">${catalogShortcuts.map(([label,url])=>`<a href="${c.esc(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('')}</nav>`:`<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints" aria-live="polite">${c.searchHints()}</div></div>`}</section>
  <section class="portal-quick-section" aria-label="常用应用"><div class="portal-section-bar"><div class="portal-mode-tabs" role="group" aria-label="常用应用显示方式">${Object.entries(quickModes).map(([id,name])=>`<button data-action="quick-mode" data-id="${id}" aria-pressed="${mode===id}" class="${mode===id?'active':''}">${name}</button>`).join('')}</div><button class="portal-customize" data-action="customize">设置我的常用 ${c.icon('pen')}</button></div>
  ${apps.length?`<div class="portal-quick-grid">${apps.map(s=>appTile(c,s,'portal-quick')).join('')}</div>`:mode==='custom'?`<div class="portal-custom-empty"><span>还未添加常用应用</span>${c.btn('选择应用','customize','','soft')}</div>`:`<div class="portal-custom-empty"><span>暂无${quickModes[mode]}</span></div>`}</section>
  <section class="portal-catalog"><div class="section-head"><h2>服务大厅</h2>${c.link('查看全部 →','services'+(c.audience==='all'?'':'?audience='+c.audience))}</div>${audienceTabs(c,c.audience)}

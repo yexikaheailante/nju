@@ -1,4 +1,4 @@
-import {donationInstructions} from './original-links.js?v=20261111.2';
+import {donationInstructions} from './original-links.js?v=20261112.2';
 const descriptions={
  '馆藏搜索':'检索馆藏图书，查看馆藏位置与可借状态。',
  '图书续借':'查看当前借阅、应还日期，并办理符合条件的图书续借。',
@@ -59,7 +59,7 @@ export function serviceCopy(service,config={services:{}}){
   '江苏省高校智盟卡':'在“江苏省高校数字图书馆JALIS”公众号完成首次绑定认证。使用前查询收藏馆的入馆和借阅要求。',
   '座位预约':'请打开「南京大学」APP，或用微信扫描下方二维码，关注「南京大学信息门户」。登录后进入「座位预约」办理。',
   '研讨间预约（校内IP）':'连接校园网络，打开预约入口，按系统要求选择场地、日期和时段。查看审核状态并按时使用。',
-  '意见反馈':'通过“我的图书馆”进入问题反馈。可先在本站整理反馈草稿，再复制内容到反馈入口发送。',
+  '意见反馈':'点击“意见反馈”，按当前身份进入对应的官方表单。也可在“我的反馈”先保存草稿，再复制内容到表单提交。',
   '校友线下扫码入馆':'准备校友校园码，按入馆现场指引核验身份并扫码入馆。',
  };
  const instructions=custom?.instructions||(Object.hasOwn(specific,service.name)?specific[service.name]:'')||(service.name==='图书捐赠'?donationInstructions.join('\n\n'):service.externalUrl?'点击服务入口，按页面提示完成检索或办理。需要账号或机构权限的资源，请按服务提供方要求登录。':'查看本页服务说明，按提示使用对应功能。');

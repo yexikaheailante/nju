@@ -1,5 +1,5 @@
-import {sourceRows,previousTargets} from './catalog-spec.js?v=20261112';
-import {originalLinks} from './original-links.js?v=20261111.2';
+import {sourceRows,previousTargets} from './catalog-spec.js?v=20261112.2';
+import {originalLinks} from './original-links.js?v=20261112.2';
 
 // A function may be listed in more than one section of the source workbook.
 export const originalGroups=[];
@@ -25,7 +25,7 @@ export function originalCatalog(services,legacy){
   const item={...previous,id,name:row.name,primary:row.primary,category:row.category,placements:[placement],
    source:'南京大学图书馆',sourceName:row.name,sourceUrl:origin?.sourceUrl||null,externalUrl:origin?.url||null,
    originalLink:origin,description:previous?.description||'查看服务入口与办理说明。',route:previous?.route||'directory',
-   depth:origin?.url?'外部服务':origin?.kind==='unconfigured'?'暂未开放':origin?.kind==='content'?'服务说明':previous?.depth||'服务目录',target};
+   depth:origin?.url||origin?.kind==='role'?'外部服务':origin?.kind==='unconfigured'?'暂未开放':origin?.kind==='content'?'服务说明':previous?.depth||'服务目录',target};
   byName.set(row.name,item);list.push(item);
  }
  return list;
