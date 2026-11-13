@@ -5,7 +5,7 @@ import {applyCatalogConfig} from './catalog-state.js?v=20261106';
 import {serviceSuggestions} from './search-suggestions.js?v=20261106';
 import {libraryPage} from './library-ui.js?v=20261112.2';
 import {ensurePortal,quickApps,filterApps,quickModes,recordUse,setCustom,setMode,catalogSearchFields,catalogSearchUrl} from './portal.js?v=20261112.2';
-import {homePage,hallPage} from './portal-ui.js?v=20261112.2';
+import {homePage,hallPage} from './portal-ui.js?v=20261113';
 import {canCreateCourse,canReserve,canViewService,canViewTicket,requireAction} from './role-access.js';
 import {roles,uid,today,stamp,searchResources,createTicket,transition,reserve,cancelReservation,citation,outline,outlineFields,migrateRoles} from './domain.js';
 import {services,legacy,resources,knowledge,toolGroups,events,initialState,referenceUrl} from './data.js';
@@ -69,7 +69,34 @@ function shell(content){const active=route==='usage'?'':route==='home'?'home':['
 function searchForm(){
  const catalog=scope==='resources';
  const field=catalog?`<select class="catalog-search-field" name="field" aria-label="馆藏检索字段">${opts(catalogSearchFields,'keyword')}</select>`:'';
- return `<form id="search-global" class="search-row">${field}<input name="q" aria-label="请输入关键词" autocomplete="off" ${catalog?'required':'aria-controls="portal-search-hints"'} placeholder="${catalog?'输入检索词':'输入服务名称或办理需求'}"><button class="btn primary" type="submit">${icon('search')} 搜索</button></form>`;
+ const hints=scope==='services'?'aria-controls="portal-search-hints"':'required';
+ const placeholder=catalog?'输入检索词':scope==='nanyong'?'输入研究主题或问题':'输入服务名称或办理需求';
+ return `<form id="search-global" class="search-row">${field}<input name="q" aria-label="请输入关键词" autocomplete="off" ${hints} placeholder="${placeholder}"><button class="btn primary" type="submit">${icon('search')} 搜索</button></form>`;
+}
+
+function nanyongSearchUrl(query){
+ const url=new URL('https://nju.libsp.net/api/openAccess/redirect/history');
+ url.searchParams.set('agentId','c9689c61-0533-11f0-8782-d039570c2cce');
+ url.searchParams.set('modelId','9270dfbe-fb21-11ef-aa04-00155de9158a');
+ url.searchParams.set('exploreId','');
+ url.searchParams.set('searchText',query);
+ return url.href;
+}
+
+function submitHomeSearch(values){
+ if(searchComposing)return;
+ const query=String(values.q||'').trim();
+ if(scope!=='services'&&!query)throw Error('请输入检索关键词。');
+ if(query){
+  state.searchHistory.unshift({q:query,scope,time:stamp()});
+  state.searchHistory=state.searchHistory.slice(0,20);
+  save();
+ }
+ if(scope==='services')go('services?q='+encodeURIComponent(query));
+ else{
+  const url=scope==='nanyong'?nanyongSearchUrl(query):catalogSearchUrl(values.field,query);
+  window.open(url,'_blank','noopener,noreferrer');
+ }
 }
 function searchHints(q=''){
  const needle=String(q).trim(),available=filterApps(originalServices,state.role);
@@ -145,7 +172,7 @@ if(a==='reserve'){modal('预约'+esc(id),'可登记时段 08:00—22:00；重叠
 if(a.startsWith('ticket-')){const action=a.slice(7);if(action==='accept'||action==='confirm'){transition(state,state.role,id,action);save();render();toast(action==='accept'?'已受理，请继续处理':'已确认解决');return;}const labels={need:'要求补充材料',reply:'回复处理结果',supplement:'补充材料',reopen:'继续提问'};modal(labels[action],'内容会保存到申请时间线，申请人和馆员均可查看。',`<input type="hidden" name="ticketId" value="${id}"><input type="hidden" name="action" value="${action}">${area('内容','text')}`,'transition-form');return;}
 if(a==='subscribe'){modal('保存订阅意向','此不发送通知，只在工作台保存主题。',`<input type="hidden" name="type" value="${esc(id||'检索订阅')}">${field('期刊名称或主题检索式','title')}`,'subscribe-form');return;}if(a==='unsubscribe'){state.subscriptions=state.subscriptions.filter(s=>s.id!==id||s.owner!==state.role);save();render();return;}if(a==='register'){const i=state.registrations.findIndex(r=>r.eventId===id&&r.owner===state.role);if(i<0)state.registrations.push({eventId:id,owner:state.role});else state.registrations.splice(i,1);save();render();toast(i<0?'已保存报名':'已取消报名');return;}if(a==='reset'){modal('重置当前浏览器的本地数据？','这会清除当前浏览器的项目、申请与时段记录。请先导出备份。',`<div class="actions">${btn('先导出本地数据','export-state')}${btn('确认清空本地数据','confirm-reset','','danger')}</div>`);return;}if(a==='confirm-reset'){const role=state.role;state=initialState();state.role=role;save();$('#modal').close();go('home');render();toast('本地数据已清空');return;}
 }catch(e){error(e);}});
-document.addEventListener('submit',async e=>{const f=e.target;if(!(f instanceof HTMLFormElement))return;e.preventDefault();const fd=new FormData(f),v=Object.fromEntries(fd),submit=f.querySelector('button[type="submit"],button:not([type])');try{if(submit){submit.disabled=true;submit.setAttribute('aria-busy','true');}if(f.id==='search-global'){if(searchComposing)return;const q=String(v.q||'').trim();if(scope==='resources'&&!q)throw Error('请输入检索关键词。');if(q){state.searchHistory.unshift({q,scope,time:stamp()});state.searchHistory=state.searchHistory.slice(0,20);save();}if(scope==='resources')window.open(catalogSearchUrl(v.field,q),'_blank','noopener,noreferrer');else go('services?q='+encodeURIComponent(q));return;}if(['resource-search','resource-filter','service-search','help-search','tool-search','project-search','journal-form'].includes(f.id)){const r={'resource-search':'discover','resource-filter':'discover','service-search':'services','help-search':'help','tool-search':'tools','project-search':`project/${f.dataset.project}?tab=knowledge`,'journal-form':'research?tab=journals'}[f.id];const q=new URLSearchParams(v);if(f.id==='resource-filter'&&v.fav)q.set('fav','1');go(r+(r.includes('?')?'&':'?')+q);return;}
+document.addEventListener('submit',async e=>{const f=e.target;if(!(f instanceof HTMLFormElement))return;e.preventDefault();const fd=new FormData(f),v=Object.fromEntries(fd),submit=f.querySelector('button[type="submit"],button:not([type])');try{if(submit){submit.disabled=true;submit.setAttribute('aria-busy','true');}if(f.id==='search-global'){submitHomeSearch(v);return;}if(['resource-search','resource-filter','service-search','help-search','tool-search','project-search','journal-form'].includes(f.id)){const r={'resource-search':'discover','resource-filter':'discover','service-search':'services','help-search':'help','tool-search':'tools','project-search':`project/${f.dataset.project}?tab=knowledge`,'journal-form':'research?tab=journals'}[f.id];const q=new URLSearchParams(v);if(f.id==='resource-filter'&&v.fav)q.set('fav','1');go(r+(r.includes('?')?'&':'?')+q);return;}
 if(f.id==='feedback-form'){const title=String(v.title||'').trim(),body=String(v.body||'').trim();if(!title||!body)throw Error('请填写标题和反馈内容');const record={id:f.dataset.feedback||uid(),category:v.category||'服务建议',title,body,time:stamp()};const index=state.feedbackDrafts.findIndex(d=>d.id===record.id);if(index<0)state.feedbackDrafts.unshift(record);else state.feedbackDrafts[index]=record;save();$('#modal').close();go('workspace?tab=feedback');render();toast('反馈草稿已保存，尚未发送');return;}
 if(f.id==='custom-apps-form'){const allowed=new Set(filterApps(originalServices,state.role).map(s=>s.id));const ids=fd.getAll('apps');if(ids.some(id=>!allowed.has(id)))throw Error('包含当前身份不可用的应用');setCustom(state,state.role,ids);setMode(state,state.role,'custom');save();$('#modal').close();render();toast('我的常用已保存');return;}if(f.id==='request-form'){const t=createTicket(state,state.role,v);save();$('#modal').close();go('ticket/'+t.id);toast('申请已提交，可切换馆员处理');return;}if(f.id==='project-form'){let p=state.projects.find(p=>p.id===f.dataset.project&&p.owner===state.role);if(!v.title.trim())throw Error('请填写项目名称');if(p){p.title=v.title.trim();p.question=v.question.trim();}else{p={id:uid(),owner:state.role,title:v.title.trim(),question:v.question.trim(),refs:v.resourceId?[v.resourceId]:[],notes:[],matrix:{},outline:{}};state.projects.unshift(p);}save();$('#modal').close();if(v.next==='note-resource'){render();noteModal(p,v.resourceId);}else{go('project/'+p.id);toast('研学助手已保存');}return;}if(f.id==='add-ref-form'){const p=state.projects.find(p=>p.id===v.projectId&&p.owner===state.role);if(!p)throw Error('项目不存在');if(!p.refs.includes(v.resourceId))p.refs.push(v.resourceId);save();$('#modal').close();if(v.next==='note-resource')noteModal(p,v.resourceId);else toast('已加入文献夹');return;}if(f.id==='note-form'){const p=state.projects.find(p=>p.id===f.dataset.project&&p.owner===state.role);if(!p)throw Error('项目不存在');const n={...v,id:f.dataset.note||uid(),time:stamp()};if(f.dataset.note)p.notes=p.notes.map(x=>x.id===n.id?n:x);else p.notes.unshift(n);save();$('#modal').close();go(`project/${p.id}?tab=notes`);render();toast('阅读笔记已保存');return;}if(f.id==='matrix-form'){const p=state.projects.find(p=>p.id===f.dataset.project&&p.owner===state.role);if(!p)throw Error('项目不存在');for(const r of p.refs){p.matrix[r]??={};for(const k of ['question','material','method','argument','check'])p.matrix[r][k]=v[`${r}_${k}`]||'';}save();toast('综述矩阵已保存');return;}if(f.id==='outline-form'){const p=state.projects.find(p=>p.id===f.dataset.project&&p.owner===state.role);if(!p)throw Error('项目不存在');p.outline=v;save();render();toast('已保存并更新完整性检查');return;}if(f.id==='course-form'){if(state.role!=='teacher')throw Error('仅教职工可创建');if(!v.title.trim())throw Error('请填写课程名称');state.courses.unshift({id:uid(),owner:state.role,title:v.title.trim(),description:v.description,refs:[]});save();$('#modal').close();render();toast('课程文献中心已创建');return;}if(f.id==='course-add-form'){const c=state.courses.find(c=>c.id===f.dataset.course&&c.owner===state.role);if(!c)throw Error('无权操作');c.refs=fd.getAll('refs').filter(id=>getResource(id));save();$('#modal').close();render();toast('课程书目已更新');return;}if(f.id==='reservation-form'){reserve(state,state.role,v);save();$('#modal').close();go('workspace?tab=reservations');toast('时段登记已保存');return;}if(f.id==='transition-form'){transition(state,state.role,v.ticketId,v.action,v.text);save();$('#modal').close();render();toast('处理记录已更新');return;}if(f.id==='subscribe-form'){if(!v.title.trim())throw Error('请填写订阅主题');state.subscriptions.push({...v,id:uid(),owner:state.role});save();$('#modal').close();go('workspace?tab=subscriptions');toast('订阅意向已保存，未启用推送');return;}
 }catch(e){error(e);}finally{if(submit){submit.disabled=false;submit.removeAttribute('aria-busy');}}});

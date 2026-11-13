@@ -9,6 +9,23 @@ const catalogShortcuts = [
  ['馆藏分布','https://lib.nju.edu.cn/gytsg/gzbj/xlg.htm'],
  ['借阅制度','https://lib.nju.edu.cn/gytsg/gzzd.htm'],
 ];
+const nanyongShortcuts = [
+ ['进入南雍闻道',originalLinks['南雍闻道'].url],
+ ['科学探索','https://nju.libsp.net/#/home?quickAgent=explore'],
+ ['学术追踪','https://nju.libsp.net/#/scientific'],
+ ['AI知识库','https://nju.libsp.net/#/aiKnowledgeBase'],
+ ['知识星链','https://nju.libsp.net/#/knowledgeBase'],
+ ['白泽','https://nju.libsp.net/#/scienceAssistant'],
+];
+
+function searchSupport(c){
+ if(c.scope==='services'){
+  return `<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints" aria-live="polite">${c.searchHints()}</div></div>`;
+ }
+ const nanyong=c.scope==='nanyong';
+ const shortcuts=nanyong?nanyongShortcuts:catalogShortcuts;
+ return `<nav class="catalog-shortcuts" aria-label="${nanyong?'南雍闻道快捷入口':'馆藏资源快捷入口'}">${shortcuts.map(([label,url])=>`<a href="${c.esc(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('')}</nav>`;
+}
 const campusAvailability = [
  {name:'仙林校区',seats:{available:426,total:1200},rooms:{available:8,total:18}},
  {name:'鼓楼校区',seats:{available:128,total:520},rooms:{available:3,total:8}},
@@ -73,8 +90,8 @@ function spacePreview(c){
 export function homePage(c){
  const mode=getMode(c.state,c.state.role),apps=quickApps(c.state,c.catalog,c.state.role,mode,c.recommendedOrder),list=filterApps(c.catalog,c.audience==='all'?c.state.role:c.audience,c.audience);
  return `<div class="portal-home" data-page="unified-home">
- <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏资源检索'],['services','应用搜索']].map(([id,name])=>`<button data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}<a class="portal-search-tab-link" href="${c.esc(originalLinks['南雍闻道'].url)}" target="_blank" rel="noopener noreferrer">南雍闻道</a></div>
- ${c.searchForm()}${c.scope==='resources'?`<nav class="catalog-shortcuts" aria-label="馆藏资源快捷入口">${catalogShortcuts.map(([label,url])=>`<a href="${c.esc(url)}" target="_blank" rel="noopener noreferrer">${label}</a>`).join('')}</nav>`:`<div class="portal-search-foot"><div class="portal-search-hints" id="portal-search-hints" aria-live="polite">${c.searchHints()}</div></div>`}</section>
+ <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏资源检索'],['services','应用搜索'],['nanyong','南雍闻道']].map(([id,name])=>`<button type="button" data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
+ ${c.searchForm()}${searchSupport(c)}</section>
  <section class="portal-quick-section" aria-label="常用应用"><div class="portal-section-bar"><div class="portal-mode-tabs" role="group" aria-label="常用应用显示方式">${Object.entries(quickModes).map(([id,name])=>`<button data-action="quick-mode" data-id="${id}" aria-pressed="${mode===id}" class="${mode===id?'active':''}">${name}</button>`).join('')}</div><button class="portal-customize" data-action="customize">设置我的常用 ${c.icon('pen')}</button></div>
  ${apps.length?`<div class="portal-quick-grid">${apps.map(s=>appTile(c,s,'portal-quick')).join('')}</div>`:mode==='custom'?`<div class="portal-custom-empty"><span>还未添加常用应用</span>${c.btn('选择应用','customize','','soft')}</div>`:`<div class="portal-custom-empty"><span>暂无${quickModes[mode]}</span></div>`}</section>
  <section class="portal-catalog"><div class="section-head"><h2>服务大厅</h2>${c.link('查看全部 →','services'+(c.audience==='all'?'':'?audience='+c.audience))}</div>${audienceTabs(c,c.audience)}
