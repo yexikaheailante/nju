@@ -79,7 +79,8 @@ function nanyongSearchUrl(query){
  url.searchParams.set('agentId','c9689c61-0533-11f0-8782-d039570c2cce');
  url.searchParams.set('modelId','9270dfbe-fb21-11ef-aa04-00155de9158a');
  url.searchParams.set('exploreId','');
- url.searchParams.set('searchText',query);
+ // The official redirect inserts this value into the result page's query string.
+ url.searchParams.set('searchText',encodeURIComponent(query));
  return url.href;
 }
 
