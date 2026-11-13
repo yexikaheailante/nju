@@ -1,4 +1,4 @@
-import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261112.2';
+import {quickModes,quickApps,filterApps,getMode} from './portal.js?v=20261113.2';
 import {originalLinks} from './original-links.js?v=20261112.2';
 
 const catalogShortcuts = [
@@ -15,7 +15,7 @@ const nanyongShortcuts = [
  ['学术追踪','https://nju.libsp.net/#/scientific'],
  ['AI知识库','https://nju.libsp.net/#/aiKnowledgeBase'],
  ['知识星链','https://nju.libsp.net/#/knowledgeBase'],
- ['白泽','https://nju.libsp.net/#/scienceAssistant'],
+ ['白泽','https://nju.libsp.net/#/outAgent?url=%2Fdtf%2Fpartners'],
 ];
 
 function searchSupport(c){
@@ -90,7 +90,7 @@ function spacePreview(c){
 export function homePage(c){
  const mode=getMode(c.state,c.state.role),apps=quickApps(c.state,c.catalog,c.state.role,mode,c.recommendedOrder),list=filterApps(c.catalog,c.audience==='all'?c.state.role:c.audience,c.audience);
  return `<div class="portal-home" data-page="unified-home">
- <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏资源检索'],['services','应用搜索'],['nanyong','南雍闻道']].map(([id,name])=>`<button type="button" data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
+ <section class="hero portal-search" aria-label="搜索"><div class="search-tabs" role="group" aria-label="搜索范围">${[['resources','馆藏资源'],['services','应用搜索'],['nanyong','南雍闻道']].map(([id,name])=>`<button type="button" data-action="scope" data-id="${id}" class="${c.scope===id?'active':''}" aria-pressed="${c.scope===id}">${name}</button>`).join('')}</div>
  ${c.searchForm()}${searchSupport(c)}</section>
  <section class="portal-quick-section" aria-label="常用应用"><div class="portal-section-bar"><div class="portal-mode-tabs" role="group" aria-label="常用应用显示方式">${Object.entries(quickModes).map(([id,name])=>`<button data-action="quick-mode" data-id="${id}" aria-pressed="${mode===id}" class="${mode===id?'active':''}">${name}</button>`).join('')}</div><button class="portal-customize" data-action="customize">设置我的常用 ${c.icon('pen')}</button></div>
  ${apps.length?`<div class="portal-quick-grid">${apps.map(s=>appTile(c,s,'portal-quick')).join('')}</div>`:mode==='custom'?`<div class="portal-custom-empty"><span>还未添加常用应用</span>${c.btn('选择应用','customize','','soft')}</div>`:`<div class="portal-custom-empty"><span>暂无${quickModes[mode]}</span></div>`}</section>

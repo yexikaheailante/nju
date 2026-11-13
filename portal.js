@@ -6,16 +6,16 @@ export const quickModes={default:'推荐应用',frequent:'高频应用',custom:'
 export const defaultNames=homeIcons.filter(name=>name!=='馆藏搜索');
 const frequentNames=defaultNames.filter(name=>name!=='意见反馈');
 export const catalogSearchFields = [
- ['keyword','全部检索'],
- ['title','题名'],
- ['author','责任者'],
- ['subject','主题词'],
- ['isbn','ISBN/ISSN'],
- ['callno','索书号'],
- ['publisher','出版社'],
+ ['keyword','全部检索','01'],
+ ['title','题名','02'],
+ ['author','责任者','03'],
+ ['subject','主题词','09'],
+ ['isbn','ISBN/ISSN','04'],
+ ['callno','索书号','08'],
+ ['publisher','出版社','07'],
 ];
 export function catalogSearchUrl(field,keyword){
- const type=catalogSearchFields.some(([id])=>id===field)?field:'keyword';
+ const type=catalogSearchFields.find(([id])=>id===field)?.[2]??'01';
  return 'https://opac.nju.edu.cn/#/searchListExternal/'+type+'/'+encodeURIComponent(keyword)+'/01';
 }
 const normalize=name=>name==='研讨间预约'?'研讨间预约（校内IP）':name;
