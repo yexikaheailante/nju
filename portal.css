@@ -164,7 +164,7 @@
 .catalog-shortcuts a {padding:5px 11px;border:1px solid #e2d7ec;border-radius:6px;background:#ffffffb3;color:#63438a;font-size:12px;text-decoration:none}
 .catalog-shortcuts a:hover,.catalog-shortcuts a:focus-visible {background:#eee4f5;border-color:#cdb5dd}
 .portal-header .portal-platform-name {
-  display:inline-flex;align-items:center;gap:5px;color:#772363;
+  display:inline-flex;align-items:center;gap:8px;color:#772363;
   font-family:"Microsoft YaHei","Noto Sans CJK SC",sans-serif;
   font-size:20px;font-weight:650;letter-spacing:.04em
 }
@@ -196,7 +196,7 @@
   .portal-quick-grid {grid-template-columns:repeat(auto-fit,minmax(87px,1fr));gap:6px}
   .space-preview-layout {grid-template-columns:minmax(0,1fr)}
   .portal-search .search-tabs {gap:6px 16px}
-  .portal-header .portal-platform-name {font-size:15px;gap:3px}
+  .portal-header .portal-platform-name {font-size:15px;gap:6px}
   .service-portal-mark {width:22px;height:22px}
   .catalog-search-field {padding-inline:6px 16px;font-size:12px}
   .campus-availability {padding:12px}
